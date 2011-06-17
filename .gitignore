@@ -1,0 +1,5 @@
+robinson_app/media/cache
+robinson_app/media/photos
+
+*.pyc
+
