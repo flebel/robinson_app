@@ -1,0 +1,35 @@
+{% load thumbnail %}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <title>django-robinson</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" href="{{MEDIA_URL}}css/map.css" type="text/css" media="screen" charset="utf-8"/>
+        {{form.media.js}}
+        <script type="text/javascript">
+            window.robinson = {
+                markerClick: function() { fillDetails(this.getInfoWindow().details_content); },
+                markerOver: function() { this.openInfoWindow(); },
+                markerOut: function() { this.closeInfoWindow(); }
+            };
+            function fillDetails(details_content) {
+                $("#details").html(details_content);
+            }
+        </script>
+    </head>
+    <body>
+        <div id="details">
+            {% thumbnail DEFAULT_PHOTO PHOTO_SMALL_SIZE crop="center" format="PNG" as image %}
+                <img alt="Click on a marker to get more details" src="{{image.url}}"/>
+            {% endthumbnail %}
+            <p class="default_text">Hey! Click on a marker to get more details.</p>
+        </div>
+        <div id="map">
+            {{form.map}}
+        </div>
+        <div id="footer"><span>Build your own map with <a href="http://github.com/flebel/django-robinson">django-robinson</a>.</span></div>
+    </body>
+</html>
+

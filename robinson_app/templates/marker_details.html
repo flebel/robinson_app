@@ -1,0 +1,39 @@
+{% load i18n %}
+{% load thumbnail %}
+<div id="thumbnail">
+    {% thumbnail photo.file PHOTO_LARGE_SIZE crop="noop" as image %}
+        <a target="_blank" href="{{image.url}}">
+    {% endthumbnail %}
+            {% thumbnail photo.file PHOTO_SMALL_SIZE crop="noop" as thumbnail %}
+                <img src="{{thumbnail.url}}" width="{{thumbnail.width}}" height="{{thumbnail.height}}">
+            {% endthumbnail %}
+        </a>
+</div>
+<div id="description">
+    <span class="title"><a target="_blank" href="http://www.google.com/#{{search_url_query}}">{{photo.get_location}}</a></span>
+    <br/>
+    <label>{% trans "Accuracy" %}</label>
+    <span>{{photo.get_location_accuracy_display}}</span>
+    <br/>
+    <label>{% trans "Date taken" %}</label>
+    <span>{{date_taken}}</span>
+    <br/>
+    <label>{% trans "Elevation" %}</label>
+    <span>{{photo.get_elevation}}</span>
+    {% if photo.tags %}
+        <br/>
+        <label>{% trans "Tags" %}</label>
+        <span>{{photo.tags}}</span>
+    {% endif %}
+</div>
+<div id="exif_tags">
+    {% if exif_tags %}
+        <hr/>
+        {% for tag in exif_tags %}
+            <label>{{tag.key}}</label>
+            <span>{{tag.value}}</span>
+            <br/>
+        {% endfor %}
+    {% endif %}
+</div>
+

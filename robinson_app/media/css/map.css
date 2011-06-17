@@ -1,0 +1,57 @@
+a, a:hover, a:visited {
+    color: #81b9bb;
+}
+
+hr {
+    border: 1px solid #dfe7b4;
+    margin: 4px 0 4px 0;
+}
+
+div#description {
+    float: left;
+}
+
+div#details {
+    float: left;
+    width: 400px;
+}
+
+div#details p.default_text {
+    font-weight: bold;
+}
+
+div#exif_tags {
+    float: left;
+}
+
+div#exif_tags label, div#description label {
+    color: #b0ca68;
+}
+
+div#exif_tags span, div#description span {
+    color: #8fb710;
+}
+
+div#footer {
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+
+div#footer span {    
+    color: #a0a0a0;
+}
+
+div#map {
+    float: left;
+}
+
+div#thumbnail {
+    float: left;
+    font-weight: bold;
+}
+
+span.title {
+    font-weight: bold;
+}
+

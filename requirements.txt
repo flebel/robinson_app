@@ -1,0 +1,34 @@
+# ATTENTION!
+# You will need to manually download, compile and install pyexiv2 0.3.0
+# from http://tilloy.net/dev/pyexiv2/download.html
+# Use "pip install -r /path/to/requirements.txt" to install the remaining
+# dependencies. Use virtualenv for better results ;-)
+
+Django==1.3
+
+django-picklefield==0.1.9
+
+pgmagick==0.3.6
+
+-e git+https://github.com/comoga/django-constance.git@7b435a3c7c163136df13#egg=django-constance
+
+-e git+https://github.com/django-extensions/django-extensions.git@0.6#egg=django-extensions
+
+-e git+https://github.com/flebel/django-robinson.git#egg=django-robinson
+
+# a3e78e419a6ab6436bc2 = 0.3.3 + 1 commit
+-e git+https://github.com/svetlyak40wt/django-tagging-ng.git@62d700574cee4651d9d7#egg=django-tagging-ng
+
+# Use a fork of django-gmapi which adds support for Google's Elevation API
+-e hg+https://francoislebel-django-gmapi.googlecode.com/hg/@9aa0d107d05e#egg=django-gmapi
+
+# Use a fork of sorl-thumbnail which adds support for the JPEG EXIF orientation flag
+#-e git+https://github.com/sorl/sorl-thumbnail.git@d2d58a42ce798bd97abe#egg=sorl-thumbnail
+-e git+https://github.com/vad/sorl-thumbnail.git@e8bc6ccb8e63c6990549#egg=sorl-thumbnail
+
+# For now stay at the bleeding edge
+#-e hg+https://bitbucket.org/andrewgodwin/south@7e4cbf82243f#egg=south # 7e4cbf82243f = 0.7.3
+-e hg+https://bitbucket.org/andrewgodwin/south#egg=south
+
+-e git+git://github.com/mitsuhiko/werkzeug.git@0.6.2#egg=werkzeug
+
