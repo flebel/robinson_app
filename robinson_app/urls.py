@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     (r'^$', 'robinson_app.views.map'),
 )
 
+# Serve static content from Django only when in DEBUG
 if settings.DEBUG:
     media_url = settings.MEDIA_URL
     if len(media_url) > 1 and media_url.startswith('/'):
