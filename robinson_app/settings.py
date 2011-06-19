@@ -99,10 +99,10 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
-    'django_extensions',
     
     'constance',
     'constance.backends.database',
+    'django_extensions',
     'gmapi',
     'robinson',
     'sorl.thumbnail',
