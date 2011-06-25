@@ -32,7 +32,7 @@ def json_markers(request):
         marker_details['dt'] = date_taken
         marker_details['ele'] = photo.get_elevation()
         marker_details['lat'] = photo.latitude
-        marker_details['loc'] = photo.get_location()
+        marker_details['loc'] = unicode(photo)
         marker_details['lon'] = photo.longitude
         marker_details['thumb_url'] = get_thumbnail(photo.file, settings.PHOTO_THUMBNAIL_SIZE, crop='noop').url
         markers[photo.pk] = marker_details
