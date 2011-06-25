@@ -19,14 +19,14 @@
                     var markers = [];
                     $.each(data, function(key, val) {
                         markers.push({
-                            accuracy: val.accuracy,
-                            date_taken: val.date_taken,
-                            elevation: val.elevation,
+                            accuracy: val.acc,
+                            date_taken: val.dt,
+                            elevation: val.ele,
                             lat: val.lat,
-                            location: val.location,
+                            location: val.loc,
                             lon: val.lon,
                             pk: key,
-                            thumbnail_url: val.thumbnail_url
+                            thumbnail_url: val.thumb_url
                         });
                     });
 
@@ -61,9 +61,9 @@
                             var marker_data = this.marker_data;
                             // Fetch and display the missing information
                             $.getJSON("/markers/" + marker_data.pk + ".json", null, function(data) {
-                                $("div#details div#thumbnail a#thumbnail_link").attr("href", data.photo_large_url);
-                                $("div#details div#thumbnail img#thumbnail_img").attr("src", data.photo_small_url);
-                                $("div#details div#description a#location_link").attr("href", "http://www.google.com/#" + data.search_url_query);
+                                $("div#details div#thumbnail a#thumbnail_link").attr("href", data.lg_url);
+                                $("div#details div#thumbnail img#thumbnail_img").attr("src", data.sm_url);
+                                $("div#details div#description a#location_link").attr("href", "http://www.google.com/#" + data.srch_qry);
                                 $("div#details div#description a#location_link").text(marker_data.location);
                                 $("div#details div#description span#accuracy").text(marker_data.accuracy);
                                 $("div#details div#description span#date_taken").text(marker_data.date_taken);

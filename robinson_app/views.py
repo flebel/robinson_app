@@ -28,13 +28,13 @@ def json_markers(request):
         # Use the latest EXIF tag as the date at which the picture was taken
         date_taken = photo.exiftag_set.filter(key='Exif.Image.DateTime').latest('value').value
         marker_details = dict()
-        marker_details['accuracy'] = photo.get_location_accuracy_display()
-        marker_details['date_taken'] = date_taken
-        marker_details['elevation'] = photo.get_elevation()
+        marker_details['acc'] = photo.get_location_accuracy_display()
+        marker_details['dt'] = date_taken
+        marker_details['ele'] = photo.get_elevation()
         marker_details['lat'] = photo.latitude
+        marker_details['loc'] = photo.get_location()
         marker_details['lon'] = photo.longitude
-        marker_details['location'] = photo.get_location()
-        marker_details['thumbnail_url'] = get_thumbnail(photo.file, settings.PHOTO_THUMBNAIL_SIZE, crop='noop').url
+        marker_details['thumb_url'] = get_thumbnail(photo.file, settings.PHOTO_THUMBNAIL_SIZE, crop='noop').url
         markers[photo.pk] = marker_details
     return HttpResponse(simplejson.dumps(markers), mimetype='application/json')
 
@@ -52,9 +52,9 @@ def json_markers_details(request, photo_pk):
     sorted_exif_tags = [exif_tags.filter(key=tag).values('key', 'value')[0] for tag in displayed_exif_tags if exif_tags.filter(key=tag).count() > 0]
     marker_details = dict()
     marker_details['exif_tags'] = sorted_exif_tags
-    marker_details['photo_small_url'] = get_thumbnail(photo.file, settings.PHOTO_SMALL_SIZE, crop='noop').url
-    marker_details['photo_large_url'] = get_thumbnail(photo.file, settings.PHOTO_LARGE_SIZE, crop='noop').url
-    marker_details['search_url_query'] = urllib.urlencode({ 'q': photo.get_location() })
+    marker_details['sm_url'] = get_thumbnail(photo.file, settings.PHOTO_SMALL_SIZE, crop='noop').url
+    marker_details['lg_url'] = get_thumbnail(photo.file, settings.PHOTO_LARGE_SIZE, crop='noop').url
+    marker_details['srch_qry'] = urllib.urlencode({ 'q': photo.get_location() })
     return HttpResponse(simplejson.dumps(marker_details), mimetype='application/json')
 
 def map(request):
