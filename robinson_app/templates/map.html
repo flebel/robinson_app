@@ -19,16 +19,14 @@
                     var markers = [];
                     $.each(data, function(key, val) {
                         markers.push({
+                            accuracy: val.accuracy,
+                            date_taken: val.date_taken,
+                            elevation: val.elevation,
                             lat: val.lat,
+                            location: val.location,
                             lon: val.lon,
-                            data: {
-                                accuracy: val.accuracy,
-                                date_taken: val.date_taken,
-                                elevation: val.elevation,
-                                location: val.location,
-                                pk: key,
-                                thumbnail_url: val.thumbnail_url
-                            }
+                            pk: key,
+                            thumbnail_url: val.thumbnail_url
                         });
                     });
 
@@ -53,14 +51,14 @@
 
                         var marker = new google.maps.Marker({
                             clickable: true,
-                            data: markers[key].data,
+                            marker_data: markers[key],
                             map: map,
                             position: new google.maps.LatLng(markers[key].lat, markers[key].lon),
-                            title: markers[key].data.location
+                            title: markers[key].location
                         });
 
                         google.maps.event.addListener(marker, 'click', function() {
-                            var marker_data = this.data;
+                            var marker_data = this.marker_data;
                             // Fetch and display the missing information
                             $.getJSON("/markers/" + marker_data.pk + ".json", null, function(data) {
                                 $("div#details div#thumbnail a#thumbnail_link").attr("href", data.photo_large_url);
@@ -93,18 +91,18 @@
 
                         google.maps.event.addListener(marker, 'mouseover', function() {
                             var html = '<div id="infowindow"><div id="description">' +
-                                '<span class="title">' + this.data.location + '</span>' +
+                                '<span class="title">' + this.marker_data.location + '</span>' +
                                 '<br/>' +
                                 '<label>{% trans "Accuracy" %}</label>' +
-                                '<span>' + this.data.accuracy + '</span>' +
+                                '<span>' + this.marker_data.accuracy + '</span>' +
                                 '<br/>' +
                                 '<label>{% trans "Date taken" %}</label>' +
-                                '<span>' + this.data.date_taken + '</span>' +
+                                '<span>' + this.marker_data.date_taken + '</span>' +
                                 '<br/>' +
                                 '<label>{% trans "Elevation" %}</label>' +
-                                '<span>' + this.data.elevation + '</span>' +
+                                '<span>' + this.marker_data.elevation + '</span>' +
                                 '</div>' +
-                                '<div id="thumbnail"><img src="' + this.data.thumbnail_url + '"></div>' +
+                                '<div id="thumbnail"><img src="' + this.marker_data.thumbnail_url + '"></div>' +
                                 '</div>';
                             infoWindow.setContent(html);
                             infoWindow.open(map, this);
