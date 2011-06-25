@@ -71,12 +71,12 @@
 
                                 $("div#details div#exif_tags").empty();
 
-                                if (data.exif_tags.length > 0)
+                                if (data.et.length > 0)
                                     $("div#details div#exif_tags").append("<hr/>");
 
-                                for (var tag in data.exif_tags) {
-                                    $("div#details div#exif_tags").append("<label>" + data.exif_tags[tag].key + "</label>");
-                                    $("div#details div#exif_tags").append("<span>" + data.exif_tags[tag].value + "</span>");
+                                for (var tag in data.et) {
+                                    $("div#details div#exif_tags").append("<label>" + data.et[tag].key + "</label>");
+                                    $("div#details div#exif_tags").append("<span>" + data.et[tag].value + "</span>");
                                     $("div#details div#exif_tags").append("<br/>");
                                 }
 

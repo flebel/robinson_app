@@ -51,7 +51,7 @@ def json_markers_details(request, photo_pk):
     exif_tags = photo.exiftag_set.filter(key__in=displayed_exif_tags)
     sorted_exif_tags = [exif_tags.filter(key=tag).values('key', 'value')[0] for tag in displayed_exif_tags if exif_tags.filter(key=tag).count() > 0]
     marker_details = dict()
-    marker_details['exif_tags'] = sorted_exif_tags
+    marker_details['et'] = sorted_exif_tags
     marker_details['sm_url'] = get_thumbnail(photo.file, settings.PHOTO_SMALL_SIZE, crop='noop').url
     marker_details['lg_url'] = get_thumbnail(photo.file, settings.PHOTO_LARGE_SIZE, crop='noop').url
     marker_details['srch_qry'] = urllib.urlencode({ 'q': photo.get_location() })
