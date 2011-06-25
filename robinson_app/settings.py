@@ -43,6 +43,11 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+# This makes it possible to read the EXIF metadata from small files 
+# in django-robinson since otherwise it would try to read them before
+# being physically copied to disk and would fail
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1
+
 FILE_UPLOAD_PERMISSIONS = 0600
 
 # Absolute path to the directory that holds media.
