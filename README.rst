@@ -9,7 +9,6 @@ These are the features that are planned for future versions, in order of priorit
 - Group markers together and expand them when zooming in
 - Center the map to show the most markers when the page is initially loaded
 - Color code the accuracy
-- Fetch the photos' details through AJAX calls instead of caching everything on the client
 - Add support for multiple photos at one location
 - Add the ability to search for photos by tag
 - Run a live version with admin access

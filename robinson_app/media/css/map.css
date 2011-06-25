@@ -1,10 +1,13 @@
-a, a:hover, a:visited {
+a,
+a:hover,
+a:visited {
     color: #81b9bb;
 }
 
 hr {
     border: 1px solid #dfe7b4;
     margin: 4px 0 4px 0;
+    width: 390px;
 }
 
 div#description {
@@ -16,6 +19,13 @@ div#details {
     width: 400px;
 }
 
+/* Hide these divs on initial page load */
+div#details div#description,
+div#details div#exif_tags,
+div#details div#thumbnail {
+    display: none;
+}
+
 div#details p.default_text {
     font-weight: bold;
 }
@@ -24,11 +34,13 @@ div#exif_tags {
     float: left;
 }
 
-div#exif_tags label, div#description label {
+div#description label,
+div#exif_tags label {
     color: #b0ca68;
 }
 
-div#exif_tags span, div#description span {
+div#description span,
+div#exif_tags span {
     color: #8fb710;
 }
 
@@ -42,8 +54,24 @@ div#footer span {
     color: #a0a0a0;
 }
 
-div#map {
+div#details div#exif_tags span,
+div#infowindow div#description span {
+    padding: 0 0 0 5px;
+}
+
+div#infowindow div#description span.title {
+    color: #81b9bb;
+    padding: 0;
+}
+
+div#infowindow div#thumbnail {
+    padding: 0 0 0 5px;
+}
+
+div#map_canvas {
     float: left;
+    height: 600px;
+    width: 800px;
 }
 
 div#thumbnail {

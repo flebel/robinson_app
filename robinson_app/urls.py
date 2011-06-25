@@ -7,6 +7,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
+    (r'^markers.json$', 'robinson_app.views.json_markers'),
+    (r'^markers/(?P<photo_pk>\d*).json$', 'robinson_app.views.json_markers_details'),
     (r'^$', 'robinson_app.views.map'),
 )
 

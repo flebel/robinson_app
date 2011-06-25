@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load thumbnail %}
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -7,28 +8,140 @@
         <title>django-robinson</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <link rel="stylesheet" href="{{MEDIA_URL}}css/map.css" type="text/css" media="screen" charset="utf-8"/>
-        {{form.media.js}}
-        <script type="text/javascript">
-            window.robinson = {
-                markerClick: function() { fillDetails(this.getInfoWindow().details_content); },
-                markerOver: function() { this.openInfoWindow(); },
-                markerOut: function() { this.closeInfoWindow(); }
-            };
-            function fillDetails(details_content) {
-                $("#details").html(details_content);
-            }
+        <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+        <script type="text/javascript" charset="utf-8">
+            google.load("maps", "3", {"other_params":"sensor=false"});
+            google.load("jquery", "1.6");
+        </script>
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function() {
+                $.getJSON("/markers.json", null, function(data) {
+                    var markers = [];
+                    $.each(data, function(key, val) {
+                        markers.push({
+                            lat: val.lat,
+                            lon: val.lon,
+                            data: {
+                                accuracy: val.accuracy,
+                                date_taken: val.date_taken,
+                                elevation: val.elevation,
+                                location: val.location,
+                                pk: key,
+                                thumbnail_url: val.thumbnail_url
+                            }
+                        });
+                    });
+
+                    var mapOptions = {
+                        // Center the map at the geographical center of North America
+                        center: new google.maps.LatLng(48.354479, -99.998135),
+                        keyboardShortcuts: false,
+                        mapTypeControl: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                        mapTypeId: google.maps.MapTypeId.HYBRID,
+                        scaleControl: true,
+                        zoom: 3
+                    };
+
+                    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+                    var infoWindow = new google.maps.InfoWindow({
+                        disableAutoPan: true
+                    });
+
+                    for (var key in markers) {
+                        if (!markers.hasOwnProperty(key))
+                            continue;
+
+                        var marker = new google.maps.Marker({
+                            clickable: true,
+                            data: markers[key].data,
+                            map: map,
+                            position: new google.maps.LatLng(markers[key].lat, markers[key].lon),
+                            title: markers[key].data.location
+                        });
+
+                        google.maps.event.addListener(marker, 'click', function() {
+                            var marker_data = this.data;
+                            // Fetch and display the missing information
+                            $.getJSON("/markers/" + marker_data.pk + ".json", null, function(data) {
+                                $("div#details div#thumbnail a#thumbnail_link").attr("href", data.photo_large_url);
+                                $("div#details div#thumbnail img#thumbnail_img").attr("src", data.photo_small_url);
+                                $("div#details div#description a#location_link").attr("href", "http://www.google.com/#" + data.search_url_query);
+                                $("div#details div#description a#location_link").text(marker_data.location);
+                                $("div#details div#description span#accuracy").text(marker_data.accuracy);
+                                $("div#details div#description span#date_taken").text(marker_data.date_taken);
+                                $("div#details div#description span#elevation").text(marker_data.elevation);
+
+                                $("div#details div#exif_tags").empty();
+
+                                if (data.exif_tags.length > 0)
+                                    $("div#details div#exif_tags").append("<hr/>");
+
+                                for (var tag in data.exif_tags) {
+                                    $("div#details div#exif_tags").append("<label>" + data.exif_tags[tag].key + "</label>");
+                                    $("div#details div#exif_tags").append("<span>" + data.exif_tags[tag].value + "</span>");
+                                    $("div#details div#exif_tags").append("<br/>");
+                                }
+
+                                $("div#details div#placeholder").hide();
+                                $("div#details div#thumbnail, div#details div#description, div#details div#exif_tags").show();
+                            });
+                        });
+
+                        google.maps.event.addListener(marker, 'mouseout', function() {
+                            infoWindow.close(map, this);
+                        });
+
+                        google.maps.event.addListener(marker, 'mouseover', function() {
+                            var html = '<div id="infowindow"><div id="description">' +
+                                '<span class="title">' + this.data.location + '</span>' +
+                                '<br/>' +
+                                '<label>{% trans "Accuracy" %}</label>' +
+                                '<span>' + this.data.accuracy + '</span>' +
+                                '<br/>' +
+                                '<label>{% trans "Date taken" %}</label>' +
+                                '<span>' + this.data.date_taken + '</span>' +
+                                '<br/>' +
+                                '<label>{% trans "Elevation" %}</label>' +
+                                '<span>' + this.data.elevation + '</span>' +
+                                '</div>' +
+                                '<div id="thumbnail"><img src="' + this.data.thumbnail_url + '"></div>' +
+                                '</div>';
+                            infoWindow.setContent(html);
+                            infoWindow.open(map, this);
+                        });
+                    }
+                });
+            });
         </script>
     </head>
     <body>
         <div id="details">
-            {% thumbnail DEFAULT_PHOTO PHOTO_SMALL_SIZE crop="center" format="PNG" as image %}
-                <img alt="Click on a marker to get more details" src="{{image.url}}"/>
-            {% endthumbnail %}
-            <p class="default_text">Hey! Click on a marker to get more details.</p>
+            <div id="placeholder">
+                {% thumbnail DEFAULT_PHOTO PHOTO_SMALL_SIZE crop="center" format="PNG" as image %}
+                    <img alt="Click on a marker to get more details" src="{{image.url}}"/>
+                {% endthumbnail %}
+                <p class="default_text">Hey! Click on a marker to get more details.</p>
+            </div>
+            <div id="thumbnail">
+                <a id="thumbnail_link" target="_blank" href="">
+                    <img id="thumbnail_img" src="">
+                </a>
+            </div>
+            <div id="description">
+                <span class="title"><a id="location_link" target="_blank" href=""></a></span>
+                <br/>
+                <label>{% trans "Accuracy" %}</label>
+                <span id="accuracy"></span>
+                <br/>
+                <label>{% trans "Date taken" %}</label>
+                <span id="date_taken"></span>
+                <br/>
+                <label>{% trans "Elevation" %}</label>
+                <span id="elevation"></span>
+            </div>
+            <div id="exif_tags"></div>
         </div>
-        <div id="map">
-            {{form.map}}
-        </div>
+        <div id="map_canvas"></div>
         <div id="footer"><span>Build your own map with <a href="http://github.com/flebel/django-robinson">django-robinson</a>.</span></div>
     </body>
 </html>
