@@ -15,6 +15,8 @@
         </script>
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function() {
+                // Returns the list of PKs of the photos contained in the same marker
+                // cluster as the 'pk' parameter
                 function markerCluster(pk, clusters) {
                     // Check out if the current photo is contained in a cluster
                     for (var cluster in clusters) {
