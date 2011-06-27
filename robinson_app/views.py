@@ -9,6 +9,7 @@ from django.utils import simplejson
 from robinson.models import *
 from sorl.thumbnail import get_thumbnail
 import urllib
+import utils
 
 
 def json_markers(request):
@@ -20,6 +21,7 @@ def json_markers(request):
     if not request.is_ajax():
         raise Http404
     markers = dict()
+    clusters = []
     for photo in Photo.objects.all():
         # Skip the current photo if it is not valid, i.e. was automatically
         # imported and no geolocation information has been set yet
@@ -36,7 +38,26 @@ def json_markers(request):
         marker_details['lon'] = photo.longitude
         marker_details['thumb_url'] = get_thumbnail(photo.file, settings.PHOTO_THUMBNAIL_SIZE, crop='noop').url
         markers[photo.pk] = marker_details
-    return HttpResponse(simplejson.dumps(markers), mimetype='application/json')
+    # Create lists of clusters of photos that are physically very close from
+    # each other and for which their marker may overlap another's
+    # TODO: This is not the most optimal algorithm but it does the trick for now
+    for (m1_pk, m1_details) in markers.items():
+        marker_in_cluster = False
+        for cluster in clusters:
+            if m1_pk in cluster:
+                marker_in_cluster = True
+                break
+        if not marker_in_cluster:
+            temp_cluster = []
+            for (m2_pk, m2_details) in markers.items():
+                if m1_pk == m2_pk: continue
+                if utils.distance_between_coordinates_meters(m1_details['lat'], m1_details['lon'], m2_details['lat'], m2_details['lon']) < settings.PHOTO_CLUSTER_MAXIMUM_DISTANCE:
+                    if len(temp_cluster) == 0:
+                        temp_cluster.append(m1_pk)
+                    temp_cluster.append(m2_pk)
+            if temp_cluster:
+                clusters.append(temp_cluster)
+    return HttpResponse(simplejson.dumps({ 'clusters': clusters, 'markers': markers }), mimetype='application/json')
 
 def json_markers_details(request, photo_pk):
     """

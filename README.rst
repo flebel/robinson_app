@@ -6,11 +6,10 @@ This is a demo project for the `django-robinson` application. Note that this pro
 
 These are the features that are planned for future versions, in order of priority:
 
-- Group markers together and expand them when zooming in
 - Center the map to show the most markers when the page is initially loaded
 - Color code the accuracy
-- Add support for multiple photos at one location
 - Add the ability to search for photos by tag
+- Refactor/rewrite the JavaScript code that creates the DOM from the results of the AJAX calls
 - Run a live version with admin access
 
 Installation

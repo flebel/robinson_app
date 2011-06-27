@@ -15,9 +15,20 @@
         </script>
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function() {
+                function markerCluster(pk, clusters) {
+                    // Check out if the current photo is contained in a cluster
+                    for (var cluster in clusters) {
+                        if ($.inArray(parseInt(pk), clusters[cluster]) >= 0) {
+                            return clusters[cluster];
+                        }
+                    }
+                }
+
+                var details_div = $("div#details").clone();
+
                 $.getJSON("/markers.json", null, function(data) {
                     var markers = [];
-                    $.each(data, function(key, val) {
+                    $.each(data.markers, function(key, val) {
                         markers.push({
                             accuracy: val.acc,
                             date_taken: val.dt,
@@ -59,30 +70,45 @@
 
                         google.maps.event.addListener(marker, 'click', function() {
                             var marker_data = this.marker_data;
-                            // Fetch and display the missing information
-                            $.getJSON("/markers/" + marker_data.pk + ".json", null, function(data) {
-                                $("div#details div#thumbnail a#thumbnail_link").attr("href", data.lg_url);
-                                $("div#details div#thumbnail img#thumbnail_img").attr("src", data.sm_url);
-                                $("div#details div#description a#location_link").attr("href", "http://www.google.com/#" + data.srch_qry);
-                                $("div#details div#description a#location_link").text(marker_data.location);
-                                $("div#details div#description span#accuracy").text(marker_data.accuracy);
-                                $("div#details div#description span#date_taken").text(marker_data.date_taken);
-                                $("div#details div#description span#elevation").text(marker_data.elevation);
+                            var cluster = markerCluster(marker_data.pk, data.clusters);
 
-                                $("div#details div#exif_tags").empty();
+                            if (!cluster)
+                                cluster = [marker_data.pk];
 
-                                if (data.et.length > 0)
-                                    $("div#details div#exif_tags").append("<hr/>");
+                            $("div#details").empty();
 
-                                for (var tag in data.et) {
-                                    $("div#details div#exif_tags").append("<label>" + data.et[tag].key + "</label>");
-                                    $("div#details div#exif_tags").append("<span>" + data.et[tag].value + "</span>");
-                                    $("div#details div#exif_tags").append("<br/>");
-                                }
+                            for (var pk in cluster) {
+                                $.getJSON("/markers/" + cluster[pk] + ".json", null, function(data) {
+                                    var details_div_photo = details_div.clone();
 
-                                $("div#details div#placeholder").hide();
-                                $("div#details div#thumbnail, div#details div#description, div#details div#exif_tags").show();
-                            });
+                                    $(details_div_photo).find("div.thumbnail a.thumbnail_link").attr("href", data.lg_url);
+                                    $(details_div_photo).find("div.thumbnail img.thumbnail_img").attr("src", data.sm_url);
+                                    $(details_div_photo).find("div.description a.location_link").attr("href", "http://www.google.com/#" + data.srch_qry);
+                                    $(details_div_photo).find("div.description a.location_link").text(marker_data.location);
+                                    $(details_div_photo).find("div.description span.accuracy").text(marker_data.accuracy);
+                                    $(details_div_photo).find("div.description span.date_taken").text(marker_data.date_taken);
+                                    $(details_div_photo).find("div.description span.elevation").text(marker_data.elevation);
+
+                                    $(details_div_photo).find("div.exif_tags").empty();
+                                    if (data.et.length > 0)
+                                        $(details_div_photo).find("div.exif_tags").append("<hr/>");
+                                    else
+                                        $(details_div_photo).find("div.description").append("<br/>");
+
+                                    for (var tag in data.et) {
+                                        $(details_div_photo).find("div.exif_tags").append("<label>" + data.et[tag].key + "</label>");
+                                        $(details_div_photo).find("div.exif_tags").append("<span>" + data.et[tag].value + "</span>");
+                                        $(details_div_photo).find("div.exif_tags").append("<br/>");
+                                    }
+                                    $(details_div_photo).find("div.exif_tags").append("<br/>");
+
+                                    $("div#details").append($(details_div_photo).find("div.thumbnail").last());
+                                    $("div#details").append($(details_div_photo).find("div.description").last());
+                                    $("div#details").append($(details_div_photo).find("div.exif_tags").last());
+                                    $("div#details div#placeholder").remove();
+                                    $("div#details div.thumbnail, div#details div.description, div#details div.exif_tags").show();
+                                });
+                            }
                         });
 
                         google.maps.event.addListener(marker, 'mouseout', function() {
@@ -90,19 +116,28 @@
                         });
 
                         google.maps.event.addListener(marker, 'mouseover', function() {
-                            var html = '<div id="infowindow"><div id="description">' +
-                                '<span class="title">' + this.marker_data.location + '</span>' +
-                                '<br/>' +
-                                '<label>{% trans "Accuracy" %}</label>' +
-                                '<span>' + this.marker_data.accuracy + '</span>' +
-                                '<br/>' +
-                                '<label>{% trans "Date taken" %}</label>' +
-                                '<span>' + this.marker_data.date_taken + '</span>' +
-                                '<br/>' +
-                                '<label>{% trans "Elevation" %}</label>' +
-                                '<span>' + this.marker_data.elevation + '</span>' +
-                                '</div>' +
-                                '<div id="thumbnail"><img src="' + this.marker_data.thumbnail_url + '"></div>' +
+                            var cluster = markerCluster(this.marker_data.pk, data.clusters);
+                            var title = "";
+                            if (cluster) {
+                                title = '{% trans "There are" %} ' + cluster.length + ' {% trans "photos at this location." %}<br/>{% trans "Click on the marker to view them." %}';
+                            } else {
+                                title = this.marker_data.location;
+                            }
+                            var html ='<div id="infowindow"><div class="description">' +
+                                '<span class="title">' + title + '</span>';
+                            if (!cluster) {
+                                html += '<br/>' +
+                                    '<label>{% trans "Accuracy" %}</label>' +
+                                    '<span>' + this.marker_data.accuracy + '</span>' +
+                                    '<br/>' +
+                                    '<label>{% trans "Date taken" %}</label>' +
+                                    '<span>' + this.marker_data.date_taken + '</span>' +
+                                    '<br/>' +
+                                    '<label>{% trans "Elevation" %}</label>' +
+                                    '<span>' + this.marker_data.elevation + '</span>';
+                            }
+                            html += '</div>' +
+                                '<div class="thumbnail"><img src="' + this.marker_data.thumbnail_url + '"></div>' +
                                 '</div>';
                             infoWindow.setContent(html);
                             infoWindow.open(map, this);
@@ -120,24 +155,24 @@
                 {% endthumbnail %}
                 <p class="default_text">Hey! Click on a marker to get more details.</p>
             </div>
-            <div id="thumbnail">
-                <a id="thumbnail_link" target="_blank" href="">
-                    <img id="thumbnail_img" src="">
+            <div class="thumbnail">
+                <a class="thumbnail_link" target="_blank" href="">
+                    <img class="thumbnail_img" src="">
                 </a>
             </div>
-            <div id="description">
-                <span class="title"><a id="location_link" target="_blank" href=""></a></span>
+            <div class="description">
+                <span class="title"><a class="location_link" target="_blank" href=""></a></span>
                 <br/>
                 <label>{% trans "Accuracy" %}</label>
-                <span id="accuracy"></span>
+                <span class="accuracy"></span>
                 <br/>
                 <label>{% trans "Date taken" %}</label>
-                <span id="date_taken"></span>
+                <span class="date_taken"></span>
                 <br/>
                 <label>{% trans "Elevation" %}</label>
-                <span id="elevation"></span>
+                <span class="elevation"></span>
             </div>
-            <div id="exif_tags"></div>
+            <div class="exif_tags"></div>
         </div>
         <div id="map_canvas"></div>
         <div id="footer"><span>Build your own map with <a href="http://github.com/flebel/django-robinson">django-robinson</a>.</span></div>

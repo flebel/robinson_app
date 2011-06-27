@@ -7,41 +7,30 @@ a:visited {
 hr {
     border: 1px solid #dfe7b4;
     margin: 4px 0 4px 0;
-    width: 390px;
-}
-
-div#description {
-    float: left;
+    width: 370px;
 }
 
 div#details {
     float: left;
+    height: 600px;
+    overflow: auto;
     width: 400px;
 }
 
 /* Hide these divs on initial page load */
-div#details div#description,
-div#details div#exif_tags,
-div#details div#thumbnail {
+div#details div.description,
+div#details div.exif_tags,
+div#details div.thumbnail {
     display: none;
+}
+
+div#details div.exif_tags span,
+div#infowindow div.description span {
+    padding: 0 0 0 5px;
 }
 
 div#details p.default_text {
     font-weight: bold;
-}
-
-div#exif_tags {
-    float: left;
-}
-
-div#description label,
-div#exif_tags label {
-    color: #b0ca68;
-}
-
-div#description span,
-div#exif_tags span {
-    color: #8fb710;
 }
 
 div#footer {
@@ -54,17 +43,12 @@ div#footer span {
     color: #a0a0a0;
 }
 
-div#details div#exif_tags span,
-div#infowindow div#description span {
-    padding: 0 0 0 5px;
-}
-
-div#infowindow div#description span.title {
+div#infowindow div.description span.title {
     color: #81b9bb;
     padding: 0;
 }
 
-div#infowindow div#thumbnail {
+div#infowindow div.thumbnail {
     padding: 0 0 0 5px;
 }
 
@@ -74,7 +58,25 @@ div#map_canvas {
     width: 800px;
 }
 
-div#thumbnail {
+div.description {
+    float: left;
+}
+
+div.description label,
+div.exif_tags label {
+    color: #b0ca68;
+}
+
+div.description span,
+div.exif_tags span {
+    color: #8fb710;
+}
+
+div.exif_tags {
+    float: left;
+}
+
+div.thumbnail {
     float: left;
     font-weight: bold;
 }

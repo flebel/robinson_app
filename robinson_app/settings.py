@@ -128,3 +128,6 @@ PHOTO_THUMBNAIL_SIZE = '125x125'
 PHOTO_SMALL_SIZE = '250x250'
 PHOTO_LARGE_SIZE = '1280x1280'
 
+# Maximum distance (meters) between photos to be considered a cluster
+PHOTO_CLUSTER_MAXIMUM_DISTANCE = 5
+
