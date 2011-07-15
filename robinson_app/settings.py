@@ -117,7 +117,14 @@ INSTALLED_APPS = (
 
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 CONSTANCE_CONFIG = {
-    'DISPLAYED_EXIF_TAGS': ('Exif.Photo.ExposureTime\nExif.Photo.FNumber\nExif.Photo.ISOSpeedRatings\nExif.Photo.FocalLength\nExif.Photo.ExposureProgram\nExif.Image.Model', 'Ordered list of EXIF tags to display. One EXIF tag per line.'),
+    'DISPLAYED_EXIF_TAGS': (
+        'Exif.Photo.ExposureTime\nExif.Photo.FNumber\nExif.Photo.ISOSpeedRatings\nExif.Photo.FocalLength\nExif.Photo.ExposureProgram\nExif.Image.Model',
+        'Ordered list of EXIF tags to display. One EXIF tag per line.',
+    ),
+    'GA_ID': (
+        '',
+        'Google Analytics web property ID (ie. UA-9999999-1).',
+    ),
 }
 
 # Use GraphicsMagick instead of the default PIL

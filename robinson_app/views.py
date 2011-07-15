@@ -89,6 +89,7 @@ def map(request):
     context = RequestContext(request)
     context.update({ 
                     'DEFAULT_PHOTO': settings.DEFAULT_PHOTO,
+                    'GA_ID': config.GA_ID,
                     'PHOTO_SMALL_SIZE': settings.PHOTO_SMALL_SIZE
     })
     return render_to_response('map.html', context)
