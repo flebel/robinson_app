@@ -70,7 +70,7 @@ def json_markers_details(request, photo_pk):
     # Get the EXIF tags that belongs to the current photo
     displayed_exif_tags = [tag.strip() for tag in config.DISPLAYED_EXIF_TAGS.split('\n')]
     exif_tags = photo.exiftag_set.filter(key__in=displayed_exif_tags)
-    sorted_exif_tags = [exif_tags.filter(key=tag).values('key', 'value')[0] for tag in displayed_exif_tags if exif_tags.filter(key=tag).count() > 0]
+    sorted_exif_tags = [{'key': tag.key, 'value': tag.substituted_value} for tag in (exif_tags.filter(key=tag)[0] for tag in displayed_exif_tags if exif_tags.filter(key=tag).count() > 0)]
     marker_details = dict()
     marker_details['et'] = sorted_exif_tags
     marker_details['sm_url'] = get_thumbnail(photo.file, settings.PHOTO_SMALL_SIZE, crop='noop').url
