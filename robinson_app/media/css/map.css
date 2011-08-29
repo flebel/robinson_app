@@ -4,6 +4,10 @@ a:visited {
     color: #81b9bb;
 }
 
+a.static_photo {
+    text-decoration: none;
+}
+
 hr {
     border: 1px solid #dfe7b4;
     margin: 4px 0 4px 0;
@@ -15,13 +19,6 @@ div#details {
     height: 600px;
     overflow: auto;
     width: 400px;
-}
-
-/* Hide these divs on initial page load */
-div#details div.description,
-div#details div.exif_tags,
-div#details div.thumbnail {
-    display: none;
 }
 
 div#details div.exif_tags span,

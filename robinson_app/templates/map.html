@@ -16,6 +16,10 @@
         </script>
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function() {
+                // Hide the photo's information divs on page load, they will
+                // be shown when a photo is selected
+                $('div#details div.description, div#details div.exif_tags, div#details div.thumbnail').hide();
+
                 // Returns the list of PKs of the photos contained in the same marker
                 // cluster as the 'pk' parameter
                 function markerCluster(pk, clusters) {
@@ -86,6 +90,7 @@
 
                                     $(details_div_photo).find("div.thumbnail a.thumbnail_link").attr("href", data.lg_url);
                                     $(details_div_photo).find("div.thumbnail img.thumbnail_img").attr("src", data.sm_url);
+                                    $(details_div_photo).find("div.description a.static_photo").attr("href", data.static_url);
                                     $(details_div_photo).find("div.description a.location_link").attr("href", "http://www.google.com/#" + data.srch_qry);
                                     $(details_div_photo).find("div.description a.location_link").text(marker_data.location);
                                     $(details_div_photo).find("div.description span.accuracy").text(marker_data.accuracy);
@@ -176,6 +181,9 @@
                 </a>
             </div>
             <div class="description">
+                <a class="static_photo" target="_blank" href="">
+                    <img class="static_photo_link" src="{{MEDIA_URL}}images/external-link-blue-light02-Shapes4FREE.png">
+                </a>
                 <span class="title"><a class="location_link" target="_blank" href=""></a></span>
                 <br/>
                 <label>{% trans "Accuracy" %}</label>

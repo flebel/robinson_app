@@ -1,0 +1,86 @@
+{% load i18n %}
+{% load thumbnail %}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <title>{{name}}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="shortcut icon" href="{{MEDIA_URL}}favicon.ico"/>
+        <link rel="stylesheet" href="{{MEDIA_URL}}css/map.css" type="text/css" media="screen" charset="utf-8"/>
+        <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+        <script type="text/javascript" charset="utf-8">
+            google.load("maps", "3", {"other_params":"sensor=false"});
+            google.load("jquery", "1.6.2");
+        </script>
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function() {
+                var exif_tags = {{exif_tags|safe}};
+                if (exif_tags.length > 0) {
+                    $('div#details div.exif_tags').append("<hr/>");
+                }
+                for (var tag in exif_tags) {
+                    $('div#details div.exif_tags').append("<label>" + exif_tags[tag].key + "</label>");
+                    $('div#details div.exif_tags').append("<span>" + exif_tags[tag].value + "</span>");
+                    $('div#details div.exif_tags').append("<br/>");
+                }
+
+                var mapOptions = {
+                    // Center the map at the geographical center of North America
+                    center: new google.maps.LatLng({{latitude}}, {{longitude}}),
+                    keyboardShortcuts: false,
+                    mapTypeControl: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                    mapTypeId: google.maps.MapTypeId.HYBRID,
+                    scaleControl: true,
+                    zoom: 9
+                };
+
+                var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+                var marker = new google.maps.Marker({
+                                clickable: false,
+                                map: map,
+                                position: new google.maps.LatLng({{latitude}}, {{longitude}}),
+                        });
+            });
+        </script>
+        {% if GA_ID %}
+            <script type="text/javascript">
+                var _gaq = _gaq || [];
+                _gaq.push(['_setAccount', '{{GA_ID}}']);
+                _gaq.push(['_trackPageview']);
+                (function() {
+                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                })();
+            </script>
+        {% endif %}
+    </head>
+    <body>
+        <div id="details">
+            <div class="thumbnail">
+                <a class="thumbnail_link" target="_blank" href="{{large_thumbnail_url}}">
+                    <img class="thumbnail_img" src="{{small_thumbnail_url}}">
+                </a>
+            </div>
+            <div class="description">
+                <span class="title"><a class="location_link" target="_blank" href="http://www.google.com/#{{search_url}}">{{location}}</a></span>
+                <br/>
+                <label>{% trans "Accuracy" %}</label>
+                <span class="accuracy">{{accuracy}}</span>
+                <br/>
+                <label>{% trans "Date taken" %}</label>
+                <span class="date_taken">{{date_taken}}</span>
+                <br/>
+                <label>{% trans "Elevation" %}</label>
+                <span class="elevation">{{elevation}}</span>
+            </div>
+            <div class="exif_tags"></div>
+        </div>
+        <div id="map_canvas"></div>
+        <div id="footer"><span>Still hungry? View more photos <a href="{{map_url}}">here</a>.<span></div>
+    </body>
+</html>
+

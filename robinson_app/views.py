@@ -1,6 +1,7 @@
 from constance import config
 from django import forms
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
@@ -11,6 +12,35 @@ from sorl.thumbnail import get_thumbnail
 import urllib
 import utils
 
+
+def photo(request, photo_pk):
+    """
+    Displays a map for the specified photo along with its details.
+    """
+    photo = get_object_or_404(Photo, pk=photo_pk)
+    # Use the latest EXIF tag as the date at which the picture was taken
+    date_taken = photo.exiftag_set.filter(key='Exif.Image.DateTime').latest('value').value
+    # Get the EXIF tags that belongs to the current photo
+    displayed_exif_tags = [tag.strip() for tag in config.DISPLAYED_EXIF_TAGS.split('\n')]
+    exif_tags = photo.exiftag_set.filter(key__in=displayed_exif_tags)
+    sorted_exif_tags = [{'key': tag.key, 'value': tag.substituted_value} for tag in (exif_tags.filter(key=tag)[0] for tag in displayed_exif_tags if exif_tags.filter(key=tag).count() > 0)]
+    context = RequestContext(request)
+    context.update({
+                    'accuracy': photo.get_location_accuracy_display(),
+                    'date_taken': date_taken,
+                    'elevation': photo.get_elevation(),
+                    'exif_tags': simplejson.dumps(sorted_exif_tags),
+                    'latitude': photo.latitude,
+                    'large_thumbnail_url': get_thumbnail(photo.file, settings.PHOTO_LARGE_SIZE, crop='noop').url,
+                    'location': photo.get_location(),
+                    'longitude': photo.longitude,
+                    'map_url': reverse('robinson_app.views.map'),
+                    'name': unicode(photo),
+                    'search_url': urllib.urlencode({ 'q': photo.get_location() }),
+                    'small_thumbnail_url':  get_thumbnail(photo.file, settings.PHOTO_SMALL_SIZE, crop='noop').url,
+                    'GA_ID': config.GA_ID
+    })
+    return render_to_response('photo.html', context)
 
 def json_markers(request):
     """
@@ -76,6 +106,7 @@ def json_markers_details(request, photo_pk):
     marker_details['sm_url'] = get_thumbnail(photo.file, settings.PHOTO_SMALL_SIZE, crop='noop').url
     marker_details['lg_url'] = get_thumbnail(photo.file, settings.PHOTO_LARGE_SIZE, crop='noop').url
     marker_details['srch_qry'] = urllib.urlencode({ 'q': photo.get_location() })
+    marker_details['static_url'] = reverse('robinson_app.views.photo', kwargs={ 'photo_pk': photo.pk })
     return HttpResponse(simplejson.dumps(marker_details), mimetype='application/json')
 
 def map(request):
