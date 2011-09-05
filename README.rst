@@ -6,6 +6,7 @@ This is a demo project for the `django-robinson` application. Note that this pro
 
 These are the features that are planned for future versions, in order of priority:
 
+- Upon a click on a marker, change its color until another marker is clicked on
 - Center the map to show the most markers when the page is initially loaded
 - Color code the accuracy
 - Add the ability to search for photos by tag
@@ -32,3 +33,4 @@ The following variables found in the included `settings.py` have to be set or up
 - DATABASES
 - SECRET_KEY
 
+Also, you should consider updating the values for the Constance app in the admin site.
