@@ -8,6 +8,11 @@ a.static_photo {
     text-decoration: none;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+}
+
 hr {
     border: 1px solid #dfe7b4;
     margin: 4px 0 4px 0;
@@ -17,6 +22,7 @@ hr {
 div#details {
     float: left;
     height: 600px;
+    margin: 10px;
     overflow: auto;
     width: 400px;
 }
@@ -52,6 +58,7 @@ div#infowindow div.thumbnail {
 div#map_canvas {
     float: left;
     height: 600px;
+    margin: 10px;
     width: 800px;
 }
 
@@ -80,5 +87,75 @@ div.thumbnail {
 
 span.title {
     font-weight: bold;
+}
+
+.info {
+     background-color: #4ea5cd;
+     border-color: #3b8eb5;
+}
+
+.message {
+    -moz-animation: animate-bg 5s linear infinite;
+    -moz-background-size: 40px 40px;
+    -moz-box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .4);
+    -webkit-animation: animate-bg 5s linear infinite;
+    -webkit-background-size: 40px 40px;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .4);
+    _position: absolute;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+        transparent 75%, transparent);
+    background-image: -moz-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+        transparent 75%, transparent);
+    background-image: -ms-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+        transparent 75%, transparent);
+    background-image: -o-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+        transparent 75%, transparent);
+    background-image: -webkit-gradient(linear, left top, right bottom,
+        color-stop(.25, rgba(255, 255, 255, .05)), color-stop(.25, transparent),
+        color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .05)),
+        color-stop(.75, rgba(255, 255, 255, .05)), color-stop(.75, transparent),
+        to(transparent));
+    background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+        transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+        transparent 75%, transparent);
+    background-size: 40px 40px;
+    border: 1px solid;
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .4);
+    color: #fff;
+    padding: 15px;
+    position: fixed;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .5);
+    width: 100%;
+    z-index: 5000;
+}
+
+.message h3 {
+    margin: 0 0 5px 0;
+}
+
+.message p {
+    margin: 0;
+}
+
+@-moz-keyframes animate-bg  {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -80px 0;
+    }
+}
+
+@-webkit-keyframes animate-bg {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -80px 0;
+    }
 }
 

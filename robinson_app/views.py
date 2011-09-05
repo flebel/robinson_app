@@ -118,7 +118,8 @@ def map(request):
     asynchronously.
     """
     context = RequestContext(request)
-    context.update({ 
+    context.update({
+                    'MESSAGE': config.MESSAGE,
                     'DEFAULT_PHOTO': settings.DEFAULT_PHOTO,
                     'GA_ID': config.GA_ID,
                     'PHOTO_SMALL_SIZE': settings.PHOTO_SMALL_SIZE

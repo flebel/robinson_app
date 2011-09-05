@@ -125,6 +125,10 @@ CONSTANCE_CONFIG = {
         '',
         'Google Analytics web property ID (ie. UA-9999999-1).',
     ),
+    'MESSAGE': (
+        '',
+        'Message to display as a notification on the map page.',
+    ),
 }
 
 # Use GraphicsMagick instead of the default PIL

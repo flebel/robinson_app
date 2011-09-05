@@ -20,6 +20,27 @@
                 // be shown when a photo is selected
                 $('div#details div.description, div#details div.exif_tags, div#details div.thumbnail').hide();
 
+                // Hide the message on page load
+                $('.message').css('top', -$('.info').outerHeight());
+
+                // This variable will be used as a way to display the message
+                // just once per page load
+                var message_displayed = false;
+
+                function hideMessage() {
+                    $('.message').animate({top: -$('.message').outerHeight()}, 500);
+                }
+
+                {% if MESSAGE %}
+                    // A click on the map will display the message
+                    $('div#map_canvas').click(function() {
+                        if (!message_displayed) {
+                            message_displayed = true;
+                            $('.message').animate({top: 0}, 500).delay(5000).animate({top: -$('.message').outerHeight()}, 750);
+                        }
+                    });
+                {% endif %}
+
                 // Returns the list of PKs of the photos contained in the same marker
                 // cluster as the 'pk' parameter
                 function markerCluster(pk, clusters) {
@@ -168,6 +189,10 @@
         {% endif %}
     </head>
     <body>
+        <div class="info message">
+            <h3>Hello!</h3>
+            <p>{{MESSAGE}}</p>
+        </div>
         <div id="details">
             <div id="placeholder">
                 {% thumbnail DEFAULT_PHOTO PHOTO_SMALL_SIZE crop="center" format="PNG" as image %}
