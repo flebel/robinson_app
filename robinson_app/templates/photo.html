@@ -59,28 +59,30 @@
         {% endif %}
     </head>
     <body>
-        <div id="details">
-            <div class="thumbnail">
-                <a class="thumbnail_link" target="_blank" href="{{large_thumbnail_url}}">
-                    <img class="thumbnail_img" src="{{small_thumbnail_url}}">
-                </a>
+        <div id="page">
+            <div id="details">
+                <div class="thumbnail">
+                    <a class="thumbnail_link" target="_blank" href="{{large_thumbnail_url}}">
+                        <img class="thumbnail_img" src="{{small_thumbnail_url}}">
+                    </a>
+                </div>
+                <div class="description">
+                    <span class="title"><a class="location_link" target="_blank" href="http://www.google.com/#{{search_url}}">{{location}}</a></span>
+                    <br/>
+                    <label>{% trans "Accuracy" %}</label>
+                    <span class="accuracy">{{accuracy}}</span>
+                    <br/>
+                    <label>{% trans "Date taken" %}</label>
+                    <span class="date_taken">{{date_taken}}</span>
+                    <br/>
+                    <label>{% trans "Elevation" %}</label>
+                    <span class="elevation">{{elevation}}</span>
+                </div>
+                <div class="exif_tags"></div>
             </div>
-            <div class="description">
-                <span class="title"><a class="location_link" target="_blank" href="http://www.google.com/#{{search_url}}">{{location}}</a></span>
-                <br/>
-                <label>{% trans "Accuracy" %}</label>
-                <span class="accuracy">{{accuracy}}</span>
-                <br/>
-                <label>{% trans "Date taken" %}</label>
-                <span class="date_taken">{{date_taken}}</span>
-                <br/>
-                <label>{% trans "Elevation" %}</label>
-                <span class="elevation">{{elevation}}</span>
-            </div>
-            <div class="exif_tags"></div>
+            <div id="map_canvas"></div>
+            <div id="footer"><span>Still hungry? View more photos <a href="{{map_url}}">here</a>.<span></div>
         </div>
-        <div id="map_canvas"></div>
-        <div id="footer"><span>Still hungry? View more photos <a href="{{map_url}}">here</a>.<span></div>
     </body>
 </html>
 

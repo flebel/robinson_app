@@ -189,41 +189,43 @@
         {% endif %}
     </head>
     <body>
-        <div class="info message">
-            <h3>Hello!</h3>
-            <p>{{MESSAGE}}</p>
+        <div id="page">
+            <div class="info message">
+                <h3>Hello!</h3>
+                <p>{{MESSAGE}}</p>
+            </div>
+            <div id="details">
+                <div id="placeholder">
+                    {% thumbnail DEFAULT_PHOTO PHOTO_SMALL_SIZE crop="center" format="PNG" as image %}
+                        <img alt="Click on a marker to get more details" src="{{image.url}}"/>
+                    {% endthumbnail %}
+                    <p class="default_text">Hey! Click on a marker to get more details.</p>
+                </div>
+                <div class="thumbnail">
+                    <a class="thumbnail_link" target="_blank" href="">
+                        <img class="thumbnail_img" src="">
+                    </a>
+                </div>
+                <div class="description">
+                    <a class="static_photo" target="_blank" href="">
+                        <img class="static_photo_link" src="{{MEDIA_URL}}images/external-link-blue-light02-Shapes4FREE.png">
+                    </a>
+                    <span class="title"><a class="location_link" target="_blank" href=""></a></span>
+                    <br/>
+                    <label>{% trans "Accuracy" %}</label>
+                    <span class="accuracy"></span>
+                    <br/>
+                    <label>{% trans "Date taken" %}</label>
+                    <span class="date_taken"></span>
+                    <br/>
+                    <label>{% trans "Elevation" %}</label>
+                    <span class="elevation"></span>
+                </div>
+                <div class="exif_tags"></div>
+            </div>
+            <div id="map_canvas"></div>
+            <div id="footer"><span>Build your own map with <a href="http://github.com/flebel/django-robinson">django-robinson</a>.</span></div>
         </div>
-        <div id="details">
-            <div id="placeholder">
-                {% thumbnail DEFAULT_PHOTO PHOTO_SMALL_SIZE crop="center" format="PNG" as image %}
-                    <img alt="Click on a marker to get more details" src="{{image.url}}"/>
-                {% endthumbnail %}
-                <p class="default_text">Hey! Click on a marker to get more details.</p>
-            </div>
-            <div class="thumbnail">
-                <a class="thumbnail_link" target="_blank" href="">
-                    <img class="thumbnail_img" src="">
-                </a>
-            </div>
-            <div class="description">
-                <a class="static_photo" target="_blank" href="">
-                    <img class="static_photo_link" src="{{MEDIA_URL}}images/external-link-blue-light02-Shapes4FREE.png">
-                </a>
-                <span class="title"><a class="location_link" target="_blank" href=""></a></span>
-                <br/>
-                <label>{% trans "Accuracy" %}</label>
-                <span class="accuracy"></span>
-                <br/>
-                <label>{% trans "Date taken" %}</label>
-                <span class="date_taken"></span>
-                <br/>
-                <label>{% trans "Elevation" %}</label>
-                <span class="elevation"></span>
-            </div>
-            <div class="exif_tags"></div>
-        </div>
-        <div id="map_canvas"></div>
-        <div id="footer"><span>Build your own map with <a href="http://github.com/flebel/django-robinson">django-robinson</a>.</span></div>
     </body>
 </html>
 

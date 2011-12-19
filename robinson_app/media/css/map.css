@@ -62,6 +62,10 @@ div#map_canvas {
     width: 800px;
 }
 
+div#page {
+    min-width: 1250px;
+}
+
 div.description {
     float: left;
 }
