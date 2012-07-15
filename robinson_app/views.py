@@ -27,6 +27,7 @@ def photo(request, photo_pk):
     context = RequestContext(request)
     context.update({
                     'accuracy': photo.get_location_accuracy_display(),
+                    'accuracy_value': Photo.LOCATION_ACCURACY_IN_METERS[photo.location_accuracy],
                     'date_taken': date_taken,
                     'elevation': photo.get_elevation(),
                     'exif_tags': simplejson.dumps(sorted_exif_tags),
@@ -61,6 +62,7 @@ def json_markers(request):
         date_taken = photo.exiftag_set.filter(key='Exif.Image.DateTime').latest('value').value
         marker_details = dict()
         marker_details['acc'] = photo.get_location_accuracy_display()
+        marker_details['acc_val'] = Photo.LOCATION_ACCURACY_IN_METERS[photo.location_accuracy]
         marker_details['dt'] = date_taken
         marker_details['ele'] = photo.get_elevation()
         marker_details['lat'] = photo.latitude

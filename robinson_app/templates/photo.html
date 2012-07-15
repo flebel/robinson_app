@@ -39,10 +39,19 @@
                 var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
                 var marker = new google.maps.Marker({
-                                clickable: false,
-                                map: map,
-                                position: new google.maps.LatLng({{latitude}}, {{longitude}}),
-                        });
+                    clickable: false,
+                    map: map,
+                    position: new google.maps.LatLng({{latitude}}, {{longitude}}),
+                });
+
+                var circle = new google.maps.Circle({
+                    fillColor: '#444',
+                    map: map,
+                    radius: {{accuracy_value}},
+                    strokeColor: '#aaa',
+                    strokeWeight: 1,
+                });
+                circle.bindTo('center', marker, 'position');
             });
         </script>
         {% if GA_ID %}

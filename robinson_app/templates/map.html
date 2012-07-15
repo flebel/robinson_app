@@ -59,6 +59,7 @@
                     $.each(data.markers, function(key, val) {
                         markers.push({
                             accuracy: val.acc,
+                            accuracy_value: val.acc_val,
                             date_taken: val.dt,
                             elevation: val.ele,
                             lat: val.lat,
@@ -95,6 +96,15 @@
                             position: new google.maps.LatLng(markers[key].lat, markers[key].lon),
                             title: markers[key].location
                         });
+
+                        var circle = new google.maps.Circle({
+                            fillColor: '#444',
+                            map: map,
+                            radius: markers[key].accuracy_value,
+                            strokeColor: '#aaa',
+                            strokeWeight: 1,
+                        });
+                        circle.bindTo('center', marker, 'position');
 
                         google.maps.event.addListener(marker, 'click', function() {
                             var marker_data = this.marker_data;
