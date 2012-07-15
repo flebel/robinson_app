@@ -66,7 +66,7 @@
                             location: val.loc,
                             lon: val.lon,
                             pk: key,
-                            thumbnail_url: val.thumb_url
+                            thumbnail_url: val.thumb_url,
                         });
                     });
 
@@ -77,7 +77,7 @@
                         mapTypeControl: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
                         mapTypeId: google.maps.MapTypeId.HYBRID,
                         scaleControl: true,
-                        zoom: 3
+                        zoom: 3,
                     };
 
                     var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
@@ -94,7 +94,7 @@
                             marker_data: markers[key],
                             map: map,
                             position: new google.maps.LatLng(markers[key].lat, markers[key].lon),
-                            title: markers[key].location
+                            title: markers[key].location,
                         });
 
                         var circle = new google.maps.Circle({
