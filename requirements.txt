@@ -20,7 +20,7 @@ pgmagick==0.3.6
 -e git+https://github.com/svetlyak40wt/django-tagging-ng.git@62d700574cee4651d9d7#egg=django-tagging-ng
 
 # Use a fork of django-gmapi which adds support for Google's Elevation API
--e hg+https://francoislebel-django-gmapi.googlecode.com/hg/@9aa0d107d05e#egg=django-gmapi
+-e git+https://github.com/flebel/francoislebel-django-gmapi.git@55484c6#egg=django-gmapi#egg=django-gmapi
 
 # Use a fork of sorl-thumbnail which adds support for the JPEG EXIF orientation flag
 #-e git+https://github.com/sorl/sorl-thumbnail.git@d2d58a42ce798bd97abe#egg=sorl-thumbnail
