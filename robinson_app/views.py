@@ -18,8 +18,6 @@ def photo(request, photo_pk):
     Displays a map for the specified photo along with its details.
     """
     photo = get_object_or_404(Photo, pk=photo_pk)
-    # Use the latest EXIF tag as the date at which the picture was taken
-    date_taken = photo.exiftag_set.filter(key='Exif.Image.DateTime').latest('value').value
     # Get the EXIF tags that belongs to the current photo
     displayed_exif_tags = [tag.strip() for tag in config.DISPLAYED_EXIF_TAGS.split('\n')]
     exif_tags = photo.exiftag_set.filter(key__in=displayed_exif_tags)
@@ -28,7 +26,7 @@ def photo(request, photo_pk):
     context.update({
                     'accuracy': photo.get_location_accuracy_display(),
                     'accuracy_value': Photo.LOCATION_ACCURACY_IN_METERS[photo.location_accuracy],
-                    'date_taken': date_taken,
+                    'date_taken': photo.date_taken,
                     'elevation': photo.get_elevation(),
                     'exif_tags': simplejson.dumps(sorted_exif_tags),
                     'latitude': photo.latitude,
@@ -58,12 +56,10 @@ def json_markers(request):
         # imported and no geolocation information has been set yet
         if not photo.is_valid():
             continue
-        # Use the latest EXIF tag as the date at which the picture was taken
-        date_taken = photo.exiftag_set.filter(key='Exif.Image.DateTime').latest('value').value
         marker_details = dict()
         marker_details['acc'] = photo.get_location_accuracy_display()
         marker_details['acc_val'] = Photo.LOCATION_ACCURACY_IN_METERS[photo.location_accuracy]
-        marker_details['dt'] = date_taken
+        marker_details['dt'] = photo.date_taken
         marker_details['ele'] = photo.get_elevation()
         marker_details['lat'] = photo.latitude
         marker_details['loc'] = unicode(photo)
