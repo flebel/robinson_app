@@ -33,8 +33,6 @@ TIME_ZONE = 'America/Montreal'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
-
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -58,6 +56,10 @@ MEDIA_ROOT = os.path.dirname(os.path.realpath( __file__ )) + '/media/'
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/media/'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.8/howto/static-files/
+STATIC_URL = '/static/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -101,17 +103,16 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
-    
+    'django.contrib.staticfiles',
+
     'constance',
     'constance.backends.database',
     'django_extensions',
     'gmapi',
     'robinson',
     'sorl.thumbnail',
-    'south',
     'tagging',
 )
 

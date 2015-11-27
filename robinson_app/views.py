@@ -6,9 +6,9 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.utils import simplejson
 from robinson.models import *
 from sorl.thumbnail import get_thumbnail
+import json
 import urllib
 import utils
 
@@ -28,7 +28,7 @@ def photo(request, photo_pk):
                     'accuracy_value': Photo.LOCATION_ACCURACY_IN_METERS[photo.location_accuracy],
                     'date_taken': photo.date_taken,
                     'elevation': photo.get_elevation(),
-                    'exif_tags': simplejson.dumps(sorted_exif_tags),
+                    'exif_tags': json.dumps(sorted_exif_tags),
                     'latitude': photo.latitude,
                     'large_thumbnail_url': get_thumbnail(photo.file, settings.PHOTO_LARGE_SIZE, crop='noop').url,
                     'location': photo.get_location(),
@@ -85,7 +85,7 @@ def json_markers(request):
                     temp_cluster.append(m2_pk)
             if temp_cluster:
                 clusters.append(temp_cluster)
-    return HttpResponse(simplejson.dumps({ 'clusters': clusters, 'markers': markers }), mimetype='application/json')
+    return HttpResponse(json.dumps({ 'clusters': clusters, 'markers': markers }), content_type='application/json')
 
 def json_markers_details(request, photo_pk):
     """
@@ -105,7 +105,7 @@ def json_markers_details(request, photo_pk):
     marker_details['lg_url'] = get_thumbnail(photo.file, settings.PHOTO_LARGE_SIZE, crop='noop').url
     marker_details['srch_qry'] = urllib.urlencode({ 'q': photo.get_location() })
     marker_details['static_url'] = reverse('robinson_app.views.photo', kwargs={ 'photo_pk': photo.pk })
-    return HttpResponse(simplejson.dumps(marker_details), mimetype='application/json')
+    return HttpResponse(json.dumps(marker_details), content_type='application/json')
 
 def map(request):
     """
