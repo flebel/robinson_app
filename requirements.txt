@@ -9,5 +9,5 @@ sorl-thumbnail==12.3
 
 -e git+https://github.com/flebel/django-robinson.git#egg=django-robinson
 -e git+https://github.com/flebel/francoislebel-django-gmapi@beb325a5914da86baed227e01489494d0c21cb35#egg=django-gmapi
--e git+https://github.com/svetlyak40wt/django-tagging-ng.git@f4f1a287ad16251c81d5e6ecf150c2d25fb15da0#egg=django-tagging-ng
+-e git+https://github.com/svetlyak40wt/django-tagging-ng.git@7eb967649a713e1ab3b9b76fccbb91cd0fe5fddd#egg=django-tagging-ng
 
