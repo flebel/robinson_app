@@ -8,6 +8,6 @@ pgmagick==0.6
 sorl-thumbnail==12.3
 
 -e git+https://github.com/flebel/django-robinson.git#egg=django-robinson
--e git+https://github.com/flebel/francoislebel-django-gmapi@beb325a5914da86baed227e01489494d0c21cb35#egg=django-gmapi
+-e git+https://github.com/flebel/francoislebel-django-gmapi@6aae1b3ac7b1688e0581430128fb809130a2fc4b#egg=django-gmapi
 -e git+https://github.com/svetlyak40wt/django-tagging-ng.git@7eb967649a713e1ab3b9b76fccbb91cd0fe5fddd#egg=django-tagging-ng
 
